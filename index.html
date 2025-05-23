@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>読書管理アプリ</title>
+</head>
+<!-- 課題メモパッドver8「読書管理アプリ」
+・タイル状にしたい
+・読み込んだ時に登録していたものを表示したい
+・登録日時を表示したい
+・項目ごとに削除編集したい
+-->
+
+<body>
+
+    <h4>読書管理アプリ</h4>
+<div id="Input_Area">
+    <p>入力フォーム</p>
+    <ul>
+        <li>No.：<input type="text" id="book_number" disabled></li>
+        <li>本のタイトル：<input type="text" id="book_tilte"></li>
+        <li>著者：<input type="text" id="book_author"></li>
+        <li>内容：<input type="text" id="book_content"></li>
+    </ul>
+    <button id="Save_btn">登録</button>
+</div>
+
+<div id="Output_Area">
+    <p>読書記録リスト</p><button id="Output_btn">表示</button>
+    <div id="Book_OUTPUT"></div>
+</div>
+<button id="Clear">すべて削除</button>
+
+
+<script>
+//ローカルストレージの要素数を取得してNo.を割り振る(key名にする)
+let Book_count=localStorage.length+1;
+let Book_No="Book"+Book_count;
+$("#book_number").val(Book_No);
+
+//入力フォームのデータをローカルストレージに保存
+$("#Save_btn").on("click",function(){
+    const text_data=[
+        $("#book_number").val(),$("#book_tilte").val(),$("#book_author").val(),$("#book_content").val()
+    ];
+    let obj3={}
+    obj3.Title=text_data[1];
+    obj3.Author=text_data[2];
+    obj3.Content=text_data[3];
+    let json_text3=JSON.stringify(obj3);
+
+    localStorage.setItem(Book_No,json_text3);
+
+    location.reload();//再読み込みして、画面をリセット・Noを更新
+});
+
+//ローカルストレージのデータをすべて削除
+$("#Clear").on("click",function(){
+    localStorage.clear();
+    location.reload();
+});
+
+
+//アウトプットエリアにローカルストレージのデータを出力する
+$("#Output_btn").on("click",function(){
+
+
+    $("#Book_OUTPUT").html("")//テキストエリアを空白にする
+
+for (let i = 1; i <= localStorage.length; i++) {
+
+    let Book_key="Book"+i;
+    if(localStorage.getItem(Book_key)){
+        const v=localStorage.getItem(Book_key);
+        let LS_data=JSON.parse(v); 
+        let stringAll=`<p style="background-color:#f9a980;">${Book_key}●タイトル：${LS_data.Title}　●著者：${LS_data.Author}　●内容：${LS_data.Content}</p>`;
+        $("#Book_OUTPUT").append(stringAll)
+    }
+
+}
+
+
+});
+</script>
+</body>
+
+</html>
