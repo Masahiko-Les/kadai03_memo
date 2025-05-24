@@ -1,9 +1,22 @@
 #Input_Area{
     background-color:#CCE7D3;
+    width: 500px;
 }
 
 #Output_Area{
     background-color:#FEDCBD;
+
+}
+#Book_OUTPUT{
+    display: flex;
+}
+#Book_OUTPUT > p{
+    background-color: #f9a980;
+    width:30%;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
 }
 #book_list{
     background-color: :red;
